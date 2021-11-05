@@ -4,3 +4,27 @@ npm run dev
 npm install -g electron-packager --save-dev
 electron-packager appdirectory appName --platform=win32 --arch=x64 --electron-version=1.4.3
 #~ Will package to EXE for windows
+
+
+
+
+  "build": {
+    "appId": "Podax",
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    }
+ }
+ 
+
+ 
+  "build": { "appId": "Podax", "win": { "target": "nsis"} }
+
+
+
+    "build": {
+    "appId": "Podax",
+    "win": {
+      "target": "nsis"
+    }
+  }

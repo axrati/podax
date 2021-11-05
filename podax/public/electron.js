@@ -22,8 +22,10 @@ function createWindow() {
   );
   // Open the DevTools.
   if (isDev) {
-    win.webContents.openDevTools({ mode: 'detach' });
+    console.log("Is DEV")
   }
+  win.webContents.openDevTools({ mode: 'detach' });
+
 }
 
 // This method will be called when Electron has finished
