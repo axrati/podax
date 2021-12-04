@@ -1,5 +1,5 @@
 .podax_logo{
-    margin-top: 20px;
+    margin-top: 40px;
     position:relative;
     transition: .4s;
     height: 58px;
@@ -43,7 +43,7 @@
 }
 
 .homepage_option_card:hover{
-    background-color: rgb(235, 235, 235);
+    background-color: rgb(236, 236, 236);
     /* border-style: solid; */
     cursor: pointer;
     border-radius: 10px;
