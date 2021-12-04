@@ -16,6 +16,14 @@ function Podax_hompage() {
         navigate('/encrypt');
     }
 
+    function navigate_decrypt(){
+        navigate('/decrypt');
+    }
+
+    function navigate_about(){
+        navigate('/about');
+    }
+
 
 
 
@@ -33,7 +41,7 @@ function Podax_hompage() {
                 </div>
             </div>
 
-            <div className="homepage_option_card">
+            <div className="homepage_option_card" onClick={() => navigate_decrypt()}>
                 <img src={decrypt_logo} className="encrypt_logo" alt="decrypt logo"/>
                 <div className="homepage_option_text_frame">
                     <h1 className="homepage_option_title">Decrypt</h1>
@@ -41,7 +49,7 @@ function Podax_hompage() {
                 </div>
             </div>
 
-            <div className="homepage_option_card">
+            <div className="homepage_option_card" onClick={() => navigate_about()}>
                 <img src={help_logo} className="encrypt_logo"/>
                 <div className="homepage_option_text_frame">
                     <h1 className="homepage_option_title">About</h1>
