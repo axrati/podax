@@ -28,7 +28,7 @@ function createWindow() {
 
   // Open the DevTools.
   if (isDev) {
-    console.log("Is DEV")
+    console.log("Supposed to be only dev environment log")
   }
   win.webContents.openDevTools({ mode: 'detach' });
 

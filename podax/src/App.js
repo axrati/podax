@@ -1,13 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
-import Head_frame from './components/Head_frame';
-import Podax_homepage from './components/Podax_hompage'
+import MainPage from './components/MainPage';
+import Encrypt from './components/Encrypt';
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+
 function App() {
   return (
-    <div className="App">
-        <Head_frame/>
-        <Podax_homepage/>
-    </div>
+    <Router>
+      <Routes>
+        <Route exact path="/" element={<MainPage/>} />
+        <Route exact path="/encrypt" element={<Encrypt/>} />
+
+      </Routes>
+                {/* <HeadFrame/>
+                <PodaxHomepage/> */}
+    </Router>
   );
 }
 

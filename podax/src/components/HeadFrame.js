@@ -1,5 +1,5 @@
 import React from 'react'
-import './Head_frame.css'
+import './HeadFrame.css'
 const { ipcRenderer } = window.require("electron");
 
 function Head_frame() {
