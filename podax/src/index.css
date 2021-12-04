@@ -1,8 +1,23 @@
+@font-face {
+  font-family: Raleway;
+  src: url('./fonts/Raleway-VariableFont_wght.ttf');
+}
+
+
+@font-face {
+  font-family: Kanit_light;
+  src: url('./fonts/Kanit-ThinItalic.ttf');
+}
+
+@font-face {
+  font-family: Kanit_X_light;
+  src: url('./fonts/Kanit-ExtraLightItalic.ttf');
+}
+
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: Raleway;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -11,3 +26,4 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+

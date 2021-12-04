@@ -1,0 +1,65 @@
+.podax_logo{
+    margin-top: 40px;
+    position:relative;
+    transition: .4s;
+    height: 58px;
+    width:210px;
+    position: relative;
+    left:245px;
+    margin-bottom: 80px;
+}
+
+.podax_logo:hover{
+    transform: scale(1.05);
+    transition: .2s;
+    -webkit-filter: drop-shadow(0px 0px 25px rgba(0, 0, 0, 0.356));
+}
+
+
+.podax_homepage_frame{
+    display:flex;
+    width:100%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.encrypt_logo{
+    height: 85px;
+    width: 85px;
+}
+.homepage_option_card{
+    display: flex;
+    flex-direction: row;
+    width: 50%;
+    left: 25%;
+    position:relative;
+    justify-content: center;
+    text-align:left;
+    height: 85px;
+    padding: 10px;
+    transition:.8s;
+    margin-bottom: 30px;
+}
+
+.homepage_option_card:hover{
+    background-color: rgb(236, 236, 236);
+    /* border-style: solid; */
+    cursor: pointer;
+    border-radius: 10px;
+    transition: .2s;
+}
+
+.homepage_option_title{
+    position: relative;
+    margin-left: 20px;
+    font-weight: bolder;
+    top: -12px;
+}
+
+.homepage_option_desc{
+    position: relative;
+    margin-left: 22px;
+    top: -30px;
+    font-weight: lighter;
+}
