@@ -1,11 +1,22 @@
 import React from 'react'
 import './Head_frame.css'
+const { ipcRenderer } = window.require("electron");
 
 function Head_frame() {
+
+    let minimizeApp = function(){
+        ipcRenderer.send('app:minimize')
+      }
+
+    let quitApp = function(){
+    ipcRenderer.send('app:exit')
+    }
+
     return (
-        <div class="header_frame">
-            <div class="header_minimize"> - </div>
-            <div class="header_exit"> x </div>
+        <div className="header_box">
+            <div className="header_frame"></div>
+            <div className="header_minimize" onClick={() => minimizeApp()}> - </div>
+            <div className="header_exit" onClick={() => quitApp()}> x </div>
         </div>
     )
 }

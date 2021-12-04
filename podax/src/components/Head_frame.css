@@ -1,11 +1,17 @@
+.header_box{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
 .header_frame{
     height: 30px;
     position: relative;
     background-color: #000000;
-    width: 100%;
+    width: 640px;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
 }
 
 
@@ -16,11 +22,30 @@
     transition: .2s;
     width: 50px;
     font-weight: bolder;
+    font-size:21px;
+    color:white;
 }
 
 .header_minimize:hover{
     cursor: pointer;
     background-color: #353535;
+    transition: .2s;
+}
+
+.header_exit{
+    height: 30px;
+    position: relative;
+    background-color: #c2000093;
+    transition: .2s;
+    width: 50px;
+    font-weight: bolder;
+    font-size:21px;
+    color:white;
+}
+
+.header_exit:hover{
+    cursor: pointer;
+    background-color: #c20000;
     transition: .2s;
 }
 
