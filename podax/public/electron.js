@@ -51,14 +51,12 @@ function createWindow() {
 
   ipcMain.on('encrypt:fileselect', (event) => {
     console.log("Received")
-    const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'multiSelections']});
+    const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'multiSelections', 'openDirectory']});
     console.log(selectedPaths);
     selectedPaths.then(function(result) {
       console.log(result) // "Some User token"
       event.reply('encrypt:fileselect:reply',result)
    })
-
-    // event.returnValue = selectedPaths
   })
 
 

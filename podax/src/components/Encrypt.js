@@ -36,6 +36,11 @@ function Encrypt() {
 
         ipcRenderer.on('encrypt:fileselect:reply', function(event,reply){
             console.log(reply)
+            if (reply.cancelled){
+                console.log("File select canceled, no update of state")
+            } else {
+
+            }
         });
 
     }
