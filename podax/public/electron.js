@@ -39,6 +39,10 @@ function createWindow() {
   win.setMenu(null)
 
 
+
+
+
+  
   // EVENT LISTENERS ~~~~~~~~~~
   ipcMain.on('app:minimize', function(event){
     win.minimize()
@@ -50,24 +54,29 @@ function createWindow() {
 
 
   ipcMain.on('encrypt:fileselect', (event) => {
-    console.log("Received")
     const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'multiSelections', 'openDirectory']});
     console.log(selectedPaths);
-    selectedPaths.then(function(result) {
-      console.log(result) // "Some User token"
-      event.reply('encrypt:fileselect:reply',result)
+    selectedPaths.then(function(selectedData) {
+      console.log(selectedData)
+      event.reply('encrypt:fileselect:reply',selectedData)
    })
   })
 
 
+  ipcMain.on('file:dir:validator', (event,args) => {
+    console.log(args)
+    fs.lstat(args, (error, stats) => {
+      if(error){
+        console.log("Not a valid file or Directory")
+        return_item =  {'file':false, 'dir':false}
+        event.reply('file:dir:validator:reply',return_item)
+      } else {
+        return_item =  {'file':stats.isFile(), 'dir':stats.isDirectory()}
+        event.reply('file:dir:validator:reply',return_item)
+      }
+    })
+  })
 
-// ipcMain.on('encrypt:fileselect', function(event){
-  // const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'openDirectory', 'multiSelections']});
-  // console.log(selectedPaths);
-//   event.sender.send(selectedPaths)
-//   // event.sender.send('encyrpt:fileselect:reply', selectedPaths)
-//   // win.webContents.send('encrypt:fileselect:reply', selectedPaths)
-//   })
 
 
 
