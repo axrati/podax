@@ -56,7 +56,8 @@
   "description": "<your project description>",
   "author": "axrati",
   "build": {
-    "appId": "12345678910"
+    "appId": "myapp",
+    "productName": "Podax"
   },
   "main": "public/electron.js",
   "homepage": "./"

@@ -3,7 +3,7 @@ import MainPage from './components/MainPage';
 import Encrypt from './components/Encrypt';
 import Decrypt from './components/Decrypt';
 import About from './components/About';
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
