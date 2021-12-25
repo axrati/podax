@@ -1,5 +1,6 @@
 const path = require('path');
-const { app, BrowserWindow, screen, Menu, globalShortcut, ipcMain } = require('electron');
+const fs = require('fs')
+const { app, BrowserWindow, screen, Menu, globalShortcut, ipcMain, dialog } = require('electron');
 const remote = require ("electron").remote;
 const isDev = require('electron-is-dev');
 
@@ -46,6 +47,29 @@ function createWindow() {
   ipcMain.on('app:exit', (evt, arg) =>{
     app.quit()
   })
+
+
+  ipcMain.on('encrypt:fileselect', (event) => {
+    console.log("Received")
+    const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'multiSelections']});
+    console.log(selectedPaths);
+    selectedPaths.then(function(result) {
+      console.log(result) // "Some User token"
+      event.reply('encrypt:fileselect:reply',result)
+   })
+
+    // event.returnValue = selectedPaths
+  })
+
+
+
+// ipcMain.on('encrypt:fileselect', function(event){
+  // const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'openDirectory', 'multiSelections']});
+  // console.log(selectedPaths);
+//   event.sender.send(selectedPaths)
+//   // event.sender.send('encyrpt:fileselect:reply', selectedPaths)
+//   // win.webContents.send('encrypt:fileselect:reply', selectedPaths)
+//   })
 
 
 

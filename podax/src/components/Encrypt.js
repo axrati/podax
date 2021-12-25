@@ -3,6 +3,9 @@ import BackButton from './BackButton'
 import HeadFrame from './HeadFrame'
 import encrypt_logo from './imgs/encrypted.png'
 import './Encrypt.css'
+// const { ipcRenderer} = require('electron');
+const {ipcRenderer} = window.require('electron');
+// console.log()
 
 
 function Encrypt() {
@@ -29,6 +32,12 @@ function Encrypt() {
         
         `)
 
+        ipcRenderer.send('encrypt:fileselect')
+
+        ipcRenderer.on('encrypt:fileselect:reply', function(event,reply){
+            console.log(reply)
+        });
+
     }
 
 
@@ -41,7 +50,7 @@ function Encrypt() {
             <div className="encrypt_page_form_frame">
 
                     <div className="encrypt_form_fileselect">
-                        <h3 className="encrypt_form_title">Select File/Folder</h3>
+                        <h3 className="encrypt_form_title">Select Files/Folders</h3>
                         <div className="select_file_gui" onClick={() => checkstate()}>GUI</div>
                     </div>
                     <input id="encrypt_filepath" type="text" className="text_input"  onChange={(event) => handlefilepath()} />
