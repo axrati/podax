@@ -1,0 +1,93 @@
+.encrypt_page_logo{
+    position: relative;
+    top: 40px;
+    left: 43%;
+    margin-bottom: 20px;
+}
+
+.encrypt_page_form_frame{
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    left: 5%;
+    height: 450px;
+    /* background-color: blue; */
+    position: relative;
+    top:50px
+}
+
+.encrypt_form_fileselect{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.select_file_gui{
+    height: 22px;
+    width: 80px;
+    font-size: 18px;
+    text-align: center;
+    color: white;
+    border-radius: 26px;
+    background-color: black;
+    cursor: pointer;
+    top: 24px;
+    position: relative;
+    left: 30px;
+}
+
+.encrypt_form_title{
+    font-size: 22px;
+    font-weight:normal
+}
+
+.text_input{
+    outline: none;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: soild;
+    border-bottom-width: 1px;
+    height: 30px;
+    font-size: 20px;
+    font-family: Raleway;
+    font-weight: bolder;
+    color:rgb(39, 39, 39)
+}
+
+
+.input_subtext{
+    font-weight: lighter;
+    font-style: italic;
+    color: #8F8F8F;
+    position:relative;
+    top: -15px;
+    font-size:14px;
+}
+
+
+.execution_button{
+    position: relative;
+    width: 40%;
+    left: 30%;
+    height: 60px;
+    background-color: black;
+    border-radius: 5px;
+    top:30px;
+    cursor: pointer;
+    transition:.2s;
+}
+
+.execution_button:hover{
+    filter: drop-shadow(6px 4px 30px rgba(0, 0, 0, 0.374));
+    transition:.2s;
+}
+
+.execution_text{
+color:white;
+text-align: center;
+font-size: 28px;
+font-weight:bolder;
+top:-30px;
+position: relative;
+}

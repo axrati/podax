@@ -1,5 +1,5 @@
 import React from 'react'
-import './Head_frame.css'
+import './HeadFrame.css'
 const { ipcRenderer } = window.require("electron");
 
 function Head_frame() {
@@ -17,6 +17,7 @@ function Head_frame() {
             <div className="header_frame"></div>
             <div className="header_minimize" onClick={() => minimizeApp()}> - </div>
             <div className="header_exit" onClick={() => quitApp()}> x </div>
+            
         </div>
     )
 }

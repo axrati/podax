@@ -1,5 +1,6 @@
 const path = require('path');
-const { app, BrowserWindow, screen, Menu, globalShortcut, ipcMain } = require('electron');
+const fs = require('fs')
+const { app, BrowserWindow, screen, Menu, globalShortcut, ipcMain, dialog } = require('electron');
 const remote = require ("electron").remote;
 const isDev = require('electron-is-dev');
 
@@ -9,6 +10,7 @@ function createWindow() {
     width: 700,
     height: 700,
     frame: false,
+
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
@@ -28,7 +30,7 @@ function createWindow() {
 
   // Open the DevTools.
   if (isDev) {
-    console.log("Is DEV")
+    console.log("Supposed to be only dev environment log")
   }
   win.webContents.openDevTools({ mode: 'detach' });
 
@@ -45,6 +47,27 @@ function createWindow() {
   ipcMain.on('app:exit', (evt, arg) =>{
     app.quit()
   })
+
+
+  ipcMain.on('encrypt:fileselect', (event) => {
+    console.log("Received")
+    const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'multiSelections', 'openDirectory']});
+    console.log(selectedPaths);
+    selectedPaths.then(function(result) {
+      console.log(result) // "Some User token"
+      event.reply('encrypt:fileselect:reply',result)
+   })
+  })
+
+
+
+// ipcMain.on('encrypt:fileselect', function(event){
+  // const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'openDirectory', 'multiSelections']});
+  // console.log(selectedPaths);
+//   event.sender.send(selectedPaths)
+//   // event.sender.send('encyrpt:fileselect:reply', selectedPaths)
+//   // win.webContents.send('encrypt:fileselect:reply', selectedPaths)
+//   })
 
 
 
