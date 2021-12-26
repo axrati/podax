@@ -42,19 +42,22 @@ function createWindow() {
 
 
 
-  
+
   // EVENT LISTENERS ~~~~~~~~~~
+
+  // Min App
   ipcMain.on('app:minimize', function(event){
     win.minimize()
   })
 
+  // Close App
   ipcMain.on('app:exit', (evt, arg) =>{
     app.quit()
   })
 
-
+  // File selector
   ipcMain.on('encrypt:fileselect', (event) => {
-    const selectedPaths = dialog.showOpenDialog({properties: ['openFile', 'multiSelections', 'openDirectory']});
+    const selectedPaths = dialog.showOpenDialog({properties: ['openFile' ]}); //'multiSelections', 'openDirectory'
     console.log(selectedPaths);
     selectedPaths.then(function(selectedData) {
       console.log(selectedData)
@@ -63,8 +66,19 @@ function createWindow() {
   })
 
 
+  // Folder Selector
+  ipcMain.on('encrypt:folderselect', (event) => {
+    const selectedPaths = dialog.showOpenDialog({properties: ['openDirectory' ]}); //'multiSelections', 'openDirectory'
+    console.log(selectedPaths);
+    selectedPaths.then(function(selectedData) {
+      console.log(selectedData)
+      event.reply('encrypt:folderselect:reply',selectedData)
+   })
+  })
+
+  // Filepath Validator
   ipcMain.on('file:dir:validator', (event,args) => {
-    console.log(args)
+    
     fs.lstat(args, (error, stats) => {
       if(error){
         console.log("Not a valid file or Directory")

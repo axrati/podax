@@ -24,16 +24,17 @@
 
 .select_file_gui{
     height: 22px;
-    width: 80px;
+    width: 140px;
     font-size: 18px;
     text-align: center;
     color: white;
     border-radius: 26px;
-    background-color: black;
+    background-color: rgb(0, 0, 0);
     cursor: pointer;
     top: 24px;
     position: relative;
     left: 30px;
+    margin-right: 20px;
 }
 
 .encrypt_form_title{
@@ -52,8 +53,23 @@
     font-size: 20px;
     font-family: Raleway;
     font-weight: bolder;
+    color:rgb(0, 145, 31)
+}
+
+.pass_text_input{
+    outline: none;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: soild;
+    border-bottom-width: 1px;
+    height: 30px;
+    font-size: 20px;
+    font-family: Raleway;
+    font-weight: bolder;
     color:rgb(39, 39, 39)
 }
+
 
 .bad_text_input{
     outline: none;
@@ -66,7 +82,7 @@
     font-size: 20px;
     font-family: Raleway;
     font-weight: bolder;
-    color:rgb(131, 4, 4);
+    color:rgb(233, 0, 0);
     border-bottom-color: rgb(102, 7, 7);
 }
 
