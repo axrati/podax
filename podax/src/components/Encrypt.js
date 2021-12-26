@@ -15,7 +15,20 @@ function Encrypt() {
     const [pass_input, set_pass_input] = useState([])
     const [type_input, set_type_input] = useState([])
 
+    useEffect(() => { // this hook will get called everytime when type_input has changed
+        // perform some action which will get fired everytime when type_input gets updated
+           console.log('Updated type: ', type_input)
+        }, [type_input])
 
+    useEffect(() => { 
+        console.log('Updated filepath: ', filepath_input)
+        verify_type()
+    }, [filepath_input])
+
+
+    useEffect(() => { 
+        console.log('Updated password: ', pass_input)
+    }, [pass_input])
 
 
     const verify_type = (event) => {
@@ -30,9 +43,9 @@ function Encrypt() {
             }
         });
     }
+    
 
     const encrypt_file = (event) => {
-        verify_type()
         if(type_input === 'invalid'){
             console.log('Invalid file/folder')
         } else {

@@ -55,6 +55,21 @@
     color:rgb(39, 39, 39)
 }
 
+.bad_text_input{
+    outline: none;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
+    border-bottom-style: soild;
+    border-bottom-width: 1px;
+    height: 30px;
+    font-size: 20px;
+    font-family: Raleway;
+    font-weight: bolder;
+    color:rgb(131, 4, 4);
+    border-bottom-color: rgb(102, 7, 7);
+}
+
 
 .input_subtext{
     font-weight: lighter;
