@@ -1,0 +1,17 @@
+.error_show{
+    display:block;
+    position: absolute;
+    top:630px;
+    background-color: rgba(189, 0, 0, 0.836);
+    border-radius: 3px;
+    width: 500px;
+    left: 100px;
+    z-index: 99;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+.error_hide{
+    display:none;
+}

@@ -1,5 +1,5 @@
 const path = require('path');
-const fs = require('fs')
+const fs = require('fs');
 const { app, BrowserWindow, screen, Menu, globalShortcut, ipcMain, dialog } = require('electron');
 const remote = require ("electron").remote;
 const isDev = require('electron-is-dev');
@@ -57,8 +57,7 @@ function createWindow() {
 
   // File selector
   ipcMain.on('encrypt:fileselect', (event) => {
-    const selectedPaths = dialog.showOpenDialog({properties: ['openFile' ]}); //'multiSelections', 'openDirectory'
-    console.log(selectedPaths);
+    const selectedPaths = dialog.showOpenDialog({properties: ['openFile' ]});
     selectedPaths.then(function(selectedData) {
       console.log(selectedData)
       event.reply('encrypt:fileselect:reply',selectedData)
@@ -68,8 +67,7 @@ function createWindow() {
 
   // Folder Selector
   ipcMain.on('encrypt:folderselect', (event) => {
-    const selectedPaths = dialog.showOpenDialog({properties: ['openDirectory' ]}); //'multiSelections', 'openDirectory'
-    console.log(selectedPaths);
+    const selectedPaths = dialog.showOpenDialog({properties: ['openDirectory' ]});
     selectedPaths.then(function(selectedData) {
       console.log(selectedData)
       event.reply('encrypt:folderselect:reply',selectedData)
@@ -78,7 +76,7 @@ function createWindow() {
 
   // Filepath Validator
   ipcMain.on('file:dir:validator', (event,args) => {
-    
+
     fs.lstat(args, (error, stats) => {
       if(error){
         console.log("Not a valid file or Directory")
