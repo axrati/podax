@@ -3,6 +3,60 @@ const fs = require('fs');
 const { app, BrowserWindow, screen, Menu, globalShortcut, ipcMain, dialog } = require('electron');
 const remote = require ("electron").remote;
 const isDev = require('electron-is-dev');
+const os = require('os');
+
+
+let homedir = os.homedir()
+let podaxhome = `${homedir}${path.sep}Podax${path.sep}`
+
+
+const instantiate_podax = () => {
+  // Get Home directory, to make sure user can write config
+  let homedir = os.homedir();
+  // Check for Podax folder existence
+  let podaxHomeFolder = `${homedir}${path.sep}Podax`
+
+  if (fs.existsSync(podaxHomeFolder)) {
+      console.log("Podax exists")
+  }
+  else{
+      console.log("New Podax setup")
+    // Make home directory
+    fs.mkdirSync(`${homedir}${path.sep}Podax`);
+}
+}
+instantiate_podax()
+
+
+
+
+const file_podax_schema = (filepath) => {
+  const buff = fs.readFileSync(filepath);
+  file_name = filepath.split(path.sep).pop()
+  base_data = buff.toString('base64')
+  return {"obj_type":"file", "file_name":file_name, "file_data":base_data}
+}
+
+
+const encrypted_filename_gen = () => {
+  datenow = new Date()
+  time_str = datenow.toTimeString()
+  time_cut = time_str.substring(0,8)
+  time_cln = time_cut.replaceAll(':','_')
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+  return `${mm}_${dd}_${yyyy}___${time_cln}.podax`
+}
+
+
+
+
+
+
+
+
+
 
 function createWindow() {
   // Create the browser window.
@@ -88,6 +142,20 @@ function createWindow() {
       }
     })
   })
+
+
+
+    // Folder Selector
+    ipcMain.on('encrypt:file', (event, args) => {
+
+      encyrption_json = file_podax_schema(args.file_path)
+      event.reply('encrypt:file:reply',encyrption_json)
+
+      // fs.writeFileSync(`${podaxhome}${encrypted_filename_gen()}`,  );
+
+      })
+
+    
 
 
 

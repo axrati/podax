@@ -13,12 +13,14 @@ const {ipcRenderer} = window.require('electron');
 
 function Encrypt() {
 
-    const [filepath_input, set_filepath_input] = useState([])
-    const [pass_input, set_pass_input] = useState([])
-    const [type_input, set_type_input] = useState([])
+    // User Input State
+    const [filepath_input, set_filepath_input] = useState('')
+    const [pass_input, set_pass_input] = useState('')
+    const [type_input, set_type_input] = useState('')
     const [fileclass, set_fileclass] = useState("text_input")
+    // Error Messaging State
     const [error_stat, set_error_stat] = useState(false)
-    const [error_text, set_error_text] = useState([])
+    const [error_text, set_error_text] = useState('')
     const [error_display, set_error_display] = useState("error_hide")
 
     useEffect(() => { // this hook will get called everytime when type_input has changed
@@ -30,7 +32,6 @@ function Encrypt() {
         console.log('Updated filepath: ', filepath_input)
         ipcRenderer.send('file:dir:validator', filepath_input.toString())
         ipcRenderer.on('file:dir:validator:reply', function(event,reply){
-            console.log(reply)
             if(reply.file){
                 set_type_input('file')
                 set_fileclass('text_input')
@@ -72,28 +73,24 @@ function Encrypt() {
     const file_gui_open = () => {
         ipcRenderer.send('encrypt:fileselect')
         ipcRenderer.on('encrypt:fileselect:reply', function(event,reply){
-            console.log(reply)
             if (reply.canceled){
                 console.log("File select canceled, no update of state")
             } else {
-                document.getElementById('encrypt_filepath').value = reply.filePaths[0]
-                set_filepath_input(reply.filePaths[0])
-                // verify_type()
-            }
+                document.getElementById('encrypt_filepath').value = reply.filePaths[0] // multi-select diabled, this will always have a single value
+
+                set_filepath_input(reply.filePaths[0])             }
         });
     }
 
     const folder_gui_open = () => {
         ipcRenderer.send('encrypt:folderselect')
         ipcRenderer.on('encrypt:folderselect:reply', function(event,reply){
-            console.log(reply)
             if (reply.canceled){
                 console.log("Folder select canceled, no update of state")
             } else {
-                document.getElementById('encrypt_filepath').value = reply.filePaths[0]
-                set_filepath_input(reply.filePaths[0])
-                // verify_type()
-            }
+                document.getElementById('encrypt_filepath').value = reply.filePaths[0] // multi-select diabled, this will always have a single value
+
+                set_filepath_input(reply.filePaths[0])             }
         });
     }
 
@@ -124,11 +121,14 @@ function Encrypt() {
             // Show error message
         } else if (type_input ==="file"){
             // Straight forward encryption
-            set_error_stat(false)
+            ipcRenderer.send('encrypt:file', {"file_path":filepath_input, "pass":pass_input} )
+            ipcRenderer.on('encrypt:file:reply', function(event,reply){
+                console.log(reply)
+            })
         }
          else if (type_input === "dir"){
-            set_error_stat(false)
             // Complex deconstruction of sub_folders and files
+
          }
     }
 
