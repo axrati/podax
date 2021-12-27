@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import BackButton from './BackButton'
 import HeadFrame from './HeadFrame'
 import ErrorMessage from './ErrorMessage'
+import SuccessMessage from './SuccessMessage'
 import encrypt_logo from './imgs/encrypted.png'
 import './Encrypt.css'
 import pass_words from './assets/pass_words.json' 
@@ -18,10 +19,16 @@ function Encrypt() {
     const [pass_input, set_pass_input] = useState('')
     const [type_input, set_type_input] = useState('')
     const [fileclass, set_fileclass] = useState("text_input")
+
     // Error Messaging State
     const [error_stat, set_error_stat] = useState(false)
     const [error_text, set_error_text] = useState('')
     const [error_display, set_error_display] = useState("error_hide")
+
+    // Success Messaging State
+    const [success_stat, set_success_stat] = useState(false)
+    const [success_text, set_success_text] = useState('')
+    const [success_display, set_success_display] = useState("success_hide")
 
     useEffect(() => { // this hook will get called everytime when type_input has changed
         // perform some action which will get fired everytime when type_input gets updated
@@ -58,6 +65,15 @@ function Encrypt() {
             setTimeout(function(){ set_error_display("error_hide"); set_error_stat(false)},3000)
         }
     }, [error_stat])
+
+    useEffect(() => { 
+        console.log('Updated password: ', success_stat)
+        if(success_stat){
+            set_success_display('success_show')
+        } else if (!success_stat){
+            set_success_display('success_hide')
+        }
+    }, [success_stat])
 
 
 
@@ -123,7 +139,10 @@ function Encrypt() {
             // Straight forward encryption
             ipcRenderer.send('encrypt:file', {"file_path":filepath_input, "pass":pass_input} )
             ipcRenderer.on('encrypt:file:reply', function(event,reply){
-                console.log(reply)
+                if (reply.success){
+                    set_success_text(reply.location)
+                    set_success_stat(true)
+                }
             })
         }
          else if (type_input === "dir"){
@@ -137,12 +156,14 @@ function Encrypt() {
 
 
 
+
     return (
         <div>
             <HeadFrame/>
             <BackButton />
 
             <ErrorMessage error_text={error_text} error_display={error_display} />
+            <SuccessMessage success_text={success_text} success_display={success_display} set_success_stat={set_success_stat} />
 
             <img src={encrypt_logo} className="encrypt_page_logo" alt="Encrypt logo on encrypt page"/>
         

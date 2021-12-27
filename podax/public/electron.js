@@ -171,8 +171,9 @@ function createWindow() {
 
       encyrption_json = file_podax_schema(args.file_path)
       encrypted_data = podax_encrypt(JSON.stringify(encyrption_json), args.pass)
-      fs.writeFileSync(`${podaxhome}${encrypted_filename_gen()}`, encrypted_data)
-      event.reply('encrypt:file:reply',"Success")
+      let filesavename = `${podaxhome}${encrypted_filename_gen()}`
+      fs.writeFileSync(filesavename, encrypted_data)
+      event.reply('encrypt:file:reply',{"success":true,"location":filesavename})
 
       })
 
