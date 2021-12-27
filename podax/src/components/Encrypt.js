@@ -142,6 +142,9 @@ function Encrypt() {
                 if (reply.success){
                     set_success_text(reply.location)
                     set_success_stat(true)
+                } else {
+                    set_error_text("Failed encryption - check file encoding")
+                    set_error_stat(true)
                 }
             })
         }

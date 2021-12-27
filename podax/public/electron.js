@@ -169,11 +169,17 @@ function createWindow() {
     // Folder Selector
     ipcMain.on('encrypt:file', (event, args) => {
 
-      encyrption_json = file_podax_schema(args.file_path)
-      encrypted_data = podax_encrypt(JSON.stringify(encyrption_json), args.pass)
-      let filesavename = `${podaxhome}${encrypted_filename_gen()}`
-      fs.writeFileSync(filesavename, encrypted_data)
-      event.reply('encrypt:file:reply',{"success":true,"location":filesavename})
+      try{
+        encyrption_json = file_podax_schema(args.file_path)
+        encrypted_data = podax_encrypt(JSON.stringify(encyrption_json), args.pass)
+        let filesavename = `${podaxhome}${encrypted_filename_gen()}`
+        fs.writeFileSync(filesavename, encrypted_data)
+        event.reply('encrypt:file:reply',{"success":true,"location":filesavename})
+      }
+      catch{
+        event.reply('encrypt:file:reply',{"success":false,"location":filesavename})
+      }
+
 
       })
 
