@@ -4,6 +4,8 @@ const { app, BrowserWindow, screen, Menu, globalShortcut, ipcMain, dialog } = re
 const remote = require ("electron").remote;
 const isDev = require('electron-is-dev');
 const os = require('os');
+const crypto = require('crypto');
+const algorithm = 'aes-256-ctr';
 
 
 let homedir = os.homedir()
@@ -28,6 +30,23 @@ const instantiate_podax = () => {
 instantiate_podax()
 
 
+const podax_encrypt = (data, key) => {
+  // Initialization vector
+  let initialization_vector = crypto.randomBytes(16)
+  // Create Cipher useing algorithm, key, & init_vector
+  let salt = Buffer.from(key).toString('base64')
+  let saltkey = crypto.scryptSync(key, salt, 32);
+  let cipher = crypto.createCipheriv(algorithm, saltkey, initialization_vector)
+  // Encrypt
+  let encrypted_data = Buffer.concat([initialization_vector, cipher.update(data), cipher.final()])
+
+  return encrypted_data
+}
+
+
+
+
+
 
 
 const file_podax_schema = (filepath) => {
@@ -38,14 +57,16 @@ const file_podax_schema = (filepath) => {
 }
 
 
+
+
 const encrypted_filename_gen = () => {
   datenow = new Date()
   time_str = datenow.toTimeString()
   time_cut = time_str.substring(0,8)
   time_cln = time_cut.replaceAll(':','_')
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-  var yyyy = today.getFullYear();
+  var dd = String(datenow.getDate()).padStart(2, '0');
+  var mm = String(datenow.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = datenow.getFullYear();
   return `${mm}_${dd}_${yyyy}___${time_cln}.podax`
 }
 
@@ -149,9 +170,9 @@ function createWindow() {
     ipcMain.on('encrypt:file', (event, args) => {
 
       encyrption_json = file_podax_schema(args.file_path)
-      event.reply('encrypt:file:reply',encyrption_json)
-
-      // fs.writeFileSync(`${podaxhome}${encrypted_filename_gen()}`,  );
+      encrypted_data = podax_encrypt(JSON.stringify(encyrption_json), args.pass)
+      fs.writeFileSync(`${podaxhome}${encrypted_filename_gen()}`, encrypted_data)
+      event.reply('encrypt:file:reply',"Success")
 
       })
 
