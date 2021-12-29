@@ -87,8 +87,8 @@ function Encrypt() {
 
 
     const file_gui_open = () => {
-        ipcRenderer.send('encrypt:fileselect')
-        ipcRenderer.on('encrypt:fileselect:reply', function(event,reply){
+        ipcRenderer.send('fileselect')
+        ipcRenderer.on('fileselect:reply', function(event,reply){
             if (reply.canceled){
                 console.log("File select canceled, no update of state")
             } else {
@@ -98,9 +98,10 @@ function Encrypt() {
         });
     }
 
+
     const folder_gui_open = () => {
-        ipcRenderer.send('encrypt:folderselect')
-        ipcRenderer.on('encrypt:folderselect:reply', function(event,reply){
+        ipcRenderer.send('folderselect')
+        ipcRenderer.on('folderselect:reply', function(event,reply){
             if (reply.canceled){
                 console.log("Folder select canceled, no update of state")
             } else {
@@ -177,6 +178,7 @@ function Encrypt() {
                         <div className="select_file_gui" onClick={() => file_gui_open()}>File GUI</div>
                         <div className="select_file_gui" onClick={() => folder_gui_open()}>Folder GUI</div>
                     </div>
+                    
                     <input id="encrypt_filepath" type="text" className={fileclass} onChange={(event) => handlefilepath()} />
                     <h5 className='input_subtext'>File/Folder path... Folders will have the entirety of their contents encrypted</h5>
 
@@ -185,6 +187,7 @@ function Encrypt() {
                         <h3 className="encrypt_form_title">Enter a custom key/password</h3>
                         <div className="select_file_gui" onClick={() => password_generator()}>Random</div>
                     </div>
+
                     <input id="pass_input" type="text" className="pass_text_input"  onChange={(event) => handlepass()} />
                     <h5 className='input_subtext'>Please write this down, there is no recovery process... Randomized passwords recommended.</h5>
 
