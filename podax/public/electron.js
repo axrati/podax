@@ -5,6 +5,7 @@ const remote = require ("electron").remote;
 const isDev = require('electron-is-dev');
 const os = require('os');
 const crypto = require('crypto');
+const { fstat } = require('original-fs');
 const algorithm = 'aes-256-ctr';
 
 
@@ -44,6 +45,41 @@ const podax_encrypt = (data, key) => {
 }
 
 
+
+const podax_decrypt = (data, key) => {
+  // Get the iv: the first 16 bytes
+  let iv = data.slice(0, 16);
+  // Get the rest
+  let encrypted = data.slice(16);
+  // Key Handling
+  let salt = Buffer.from(key).toString('base64')
+  let saltkey = crypto.scryptSync(key, salt, 32);
+  // Create a decipher
+  let decipher = crypto.createDecipheriv(algorithm, saltkey, iv);
+
+  let result = Buffer.concat([decipher.update(encrypted), decipher.final()]);
+  return result;
+}
+
+
+
+
+
+const podax_write_file = (data) => {
+  // {"obj_type":"file", "file_name":file_name, "file_data":base_data}
+  try{
+    fs.writeFile(`${podaxhome}${data.file_name}`, data.file_data, 'base64', function(err) {
+      console.log(`Error is: ${err}`);
+    });
+    return {"success":true, "filepath":`${podaxhome}${data.file_name}`}
+  }
+  catch {
+    console.log("Failed writefile")
+    return {"success":false, "filepath":`${podaxhome}${data.file_name}`}
+  }
+
+
+}
 
 
 
@@ -130,7 +166,7 @@ function createWindow() {
     app.quit()
   })
 
-  // File selector
+  // Encrypt File selector
   ipcMain.on('fileselect', (event) => {
     const selectedPaths = dialog.showOpenDialog({properties: ['openFile' ]});
     selectedPaths.then(function(selectedData) {
@@ -138,6 +174,17 @@ function createWindow() {
       event.reply('fileselect:reply',selectedData)
    })
   })
+
+
+    // Decrypt File selector
+    ipcMain.on('dfileselect', (event) => {
+      const selectedPaths = dialog.showOpenDialog({properties: ['openFile' ]});
+      selectedPaths.then(function(selectedData) {
+        console.log(selectedData)
+        event.reply('dfileselect:reply',selectedData)
+     })
+    })
+  
 
 
   // Folder Selector
@@ -166,7 +213,7 @@ function createWindow() {
 
 
 
-    // Folder Selector
+    // Encrypt File
     ipcMain.on('encrypt:file', (event, args) => {
 
       try{
@@ -184,6 +231,32 @@ function createWindow() {
       })
 
     
+    // Decrypt File
+    ipcMain.on('decrypt:file', (event, args) => {
+
+      try{
+        let buff_data = fs.readFileSync(args.file_path);
+        let decrypted_buff = podax_decrypt(buff_data, args.pass)
+        let return_offer = podax_write_file(JSON.parse(decrypted_buff)) // {"success":true, "filepath":`${podaxhome}${data.file_name}`}
+
+        if(return_offer.success){
+          let filesavename = return_offer.filepath
+          event.reply('decrypt:file:reply',{"success":true,"location":filesavename})
+        }
+        else {
+          let filesavename = return_offer.filepath
+          event.reply('decrypt:file:reply',{"success":false,"location":filesavename})
+        }
+      }
+
+
+    catch{
+      event.reply('decrypt:file:reply',{"success":false,"location":"Indeterminable"})
+    }
+      
+
+
+      })
 
 
 
