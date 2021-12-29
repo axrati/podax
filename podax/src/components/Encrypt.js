@@ -82,7 +82,7 @@ function Encrypt() {
     }
 
     const handlepass = (event) => {
-        set_pass_input(document.getElementById('pass_input').value)
+        set_pass_input(document.getElementById('encrypt_pass_input').value)
     }
 
 
@@ -123,7 +123,7 @@ function Encrypt() {
         }
         let password_gend = CONFIG__pass_word_obj.substring(0,CONFIG__pass_word_obj.length-1)
         set_pass_input(password_gend)
-        document.getElementById('pass_input').value = password_gend
+        document.getElementById('encrypt_pass_input').value = password_gend
     }
 
 
@@ -188,7 +188,7 @@ function Encrypt() {
                         <div className="select_file_gui" onClick={() => password_generator()}>Random</div>
                     </div>
 
-                    <input id="pass_input" type="text" className="pass_text_input"  onChange={(event) => handlepass()} />
+                    <input id="encrypt_pass_input" type="text" className="pass_text_input"  onChange={(event) => handlepass()} />
                     <h5 className='input_subtext'>Please write this down, there is no recovery process... Randomized passwords recommended.</h5>
 
 
