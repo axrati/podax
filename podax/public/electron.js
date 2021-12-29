@@ -131,21 +131,21 @@ function createWindow() {
   })
 
   // File selector
-  ipcMain.on('encrypt:fileselect', (event) => {
+  ipcMain.on('fileselect', (event) => {
     const selectedPaths = dialog.showOpenDialog({properties: ['openFile' ]});
     selectedPaths.then(function(selectedData) {
       console.log(selectedData)
-      event.reply('encrypt:fileselect:reply',selectedData)
+      event.reply('fileselect:reply',selectedData)
    })
   })
 
 
   // Folder Selector
-  ipcMain.on('encrypt:folderselect', (event) => {
+  ipcMain.on('folderselect', (event) => {
     const selectedPaths = dialog.showOpenDialog({properties: ['openDirectory' ]});
     selectedPaths.then(function(selectedData) {
       console.log(selectedData)
-      event.reply('encrypt:folderselect:reply',selectedData)
+      event.reply('folderselect:reply',selectedData)
    })
   })
 
