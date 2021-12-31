@@ -11,7 +11,7 @@ Podax will never save passwords and was built open-source so that you can verify
 ### ~ Encrypt your data with confidence and ease ~
 
 <br />
----
+
 <br />
 
 # Podax Features
@@ -29,7 +29,7 @@ Nothing to hide here. Reach out to collaborate or request new capabilities.
 Purely offline application, no inbound/outbound network calls made.
 
 <br />
----
+
 <br />
 
 
