@@ -13,24 +13,35 @@ let homedir = os.homedir()
 let podaxhome = `${homedir}${path.sep}Podax${path.sep}`
 
 
+
+const folder_creator = (folderpath) => {
+  if (fs.existsSync(`${folderpath}`)){
+      console.log(`Folder ${folderpath} already exists!`)
+      return false
+  }
+  else{
+      console.log(`Folder ${folderpath} needs to be created!`)
+      fs.mkdirSync(`${folderpath}`);
+      return true
+  }
+}
+
+
+
 const instantiate_podax = () => {
   // Get Home directory, to make sure user can write config
   let homedir = os.homedir();
   // Check for Podax folder existence
   let podaxHomeFolder = `${homedir}${path.sep}Podax`
+  folder_creator(podaxHomeFolder)
+}
 
-  if (fs.existsSync(podaxHomeFolder)) {
-      console.log("Podax exists")
-  }
-  else{
-      console.log("New Podax setup")
-    // Make home directory
-    fs.mkdirSync(`${homedir}${path.sep}Podax`);
-}
-}
 instantiate_podax()
 
 
+
+
+// Encrypts Buffer Data
 const podax_encrypt = (data, key) => {
   // Initialization vector
   let initialization_vector = crypto.randomBytes(16)
@@ -91,6 +102,109 @@ const file_podax_schema = (filepath) => {
   base_data = buff.toString('base64')
   return {"obj_type":"file", "file_name":file_name, "file_data":base_data}
 }
+
+
+
+
+const dir_podax_schema = (filename) => {
+  var stats = fs.lstatSync(filename),
+  info = {
+      path: filename,
+      file_name: path.basename(filename)
+  };
+
+if (stats.isDirectory()) {
+  info.obj_type = "folder";
+  info.children = fs.readdirSync(filename).map(function(child) {
+      return dir_podax_schema(filename + path.sep + child);
+  });
+} else {
+  // Assuming it's a file. In real life it could be a symlink or something else!
+  let buff = fs.readFileSync(filename)
+  let base_data = buff.toString('base64')
+  info.file_data = base_data;
+  info.obj_type = "file";
+
+}
+return info;
+
+}
+
+
+
+
+
+
+
+
+
+
+const dir_file_handler = (item, starting_folder) => {
+  // Determine file home
+ let filesplit_test = item.path.split(`${starting_folder}${path.sep}`)
+ console.log(`processing: ${item.file_name}`)
+ console.log(`Splitest: ${filesplit_test}`)
+  if(item.file_name === filesplit_test[1]){
+      console.log("Write to start folder")
+      fs.writeFile(`${podaxhome}${starting_folder}${path.sep}${item.file_name}`, item.file_data, 'base64', function(err) {
+        console.log(`Error is: ${err}`);
+      });
+  } else {
+      console.log("Subfolder needed")
+      let path_cutoff = filesplit_test[1].split(`${path.sep}${item.file_name}`) // ["a/b/c",'']
+      let filehome = `${starting_folder}${path.sep}${path_cutoff[0]}`
+      console.log(`shoudl be making: ${filehome}`)
+      folder_creator(`${podaxhome}${filehome}`)
+      fs.writeFile(`${podaxhome}${filehome}${path.sep}${item.file_name}`, item.file_data, 'base64', function(err) {
+        console.log(`Error is: ${err}`);
+      });
+  }
+}
+
+
+
+const dir_item_looper = (row_obj, starting_folder) => {
+
+  if(row_obj.obj_type === "file"){
+      console.log("FILE HIT")
+      let curr_folder_a = row_obj.path.split(`${path.sep}${row_obj.file_name}`)
+      let curr_folder_b = curr_folder_a[0].split(path.sep)
+      let curr_folder = curr_folder_b.pop()
+      dir_file_handler(row_obj, starting_folder)
+  }
+  else if (row_obj.obj_type === "folder"){
+      console.log("FOLDER HIT")
+      row_obj.children.map( (row_2_obj) => {dir_item_looper(row_2_obj, starting_folder)})
+  }
+
+}
+
+
+
+const unpackDirJson = (fileoutput) => {
+
+  try{
+    let inner_folder = fileoutput.file_name
+    let starting_folder = `${podaxhome}${inner_folder}`
+    console.log(`starting folder: ${starting_folder}`)
+    folder_creator(starting_folder)
+  
+    for(i=0; i<fileoutput.children.length;i++){
+        dir_item_looper(fileoutput.children[i], inner_folder)
+    }
+    console.log("done unpacking")
+    return {"success":true, "filepath":`${starting_folder}`}
+  }
+
+  catch(err) {
+    console.log(err.message)
+    return {"success":false, "filepath":`Indeterminable`}
+  }
+
+}
+
+
+
 
 
 
@@ -230,6 +344,26 @@ function createWindow() {
 
       })
 
+
+
+          // Encrypt Dir
+    ipcMain.on('encrypt:dir', (event, args) => {
+      try{
+        encyrption_json = dir_podax_schema(args.file_path)
+        encrypted_data = podax_encrypt(JSON.stringify(encyrption_json), args.pass)
+        let filesavename = `${podaxhome}${encrypted_filename_gen()}`
+        fs.writeFileSync(filesavename, encrypted_data)
+        event.reply('encrypt:dir:reply',{"success":true,"location":filesavename})
+      }
+      catch(err){
+        console.log(err.message)
+        event.reply('encrypt:dir:reply',{"success":false,"location":"Indeterminable"})
+      }
+
+      })
+
+
+
     
     // Decrypt File
     ipcMain.on('decrypt:file', (event, args) => {
@@ -237,26 +371,50 @@ function createWindow() {
       try{
         let buff_data = fs.readFileSync(args.file_path);
         let decrypted_buff = podax_decrypt(buff_data, args.pass)
-        let return_offer = podax_write_file(JSON.parse(decrypted_buff)) // {"success":true, "filepath":`${podaxhome}${data.file_name}`}
+        let item = JSON.parse(decrypted_buff)
+        if(item.obj_type === "file"){
+          let return_offer = podax_write_file(JSON.parse(decrypted_buff)) // {"success":true, "filepath":`${podaxhome}${data.file_name}`}
 
-        if(return_offer.success){
-          let filesavename = return_offer.filepath
-          event.reply('decrypt:file:reply',{"success":true,"location":filesavename})
+          if(return_offer.success){
+            let filesavename = return_offer.filepath
+            event.reply('decrypt:file:reply',{"success":true,"location":filesavename})
+          }
+          else {
+            let filesavename = return_offer.filepath
+            event.reply('decrypt:file:reply',{"success":false,"location":filesavename})
+          }
         }
-        else {
-          let filesavename = return_offer.filepath
-          event.reply('decrypt:file:reply',{"success":false,"location":filesavename})
+        else if(item.obj_type==="folder"){
+          let return_offer = unpackDirJson(JSON.parse(decrypted_buff))
+
+          if(return_offer.success){
+            let filesavename = return_offer.filepath
+            event.reply('decrypt:file:reply',{"success":true,"location":filesavename})
+          }
+          else {
+            let filesavename = return_offer.filepath
+            event.reply('decrypt:file:reply',{"success":false,"location":filesavename})
+          }
         }
+
       }
 
-
-    catch{
+    catch(err){
+      console.log(err.message)
       event.reply('decrypt:file:reply',{"success":false,"location":"Indeterminable"})
     }
       
-
-
       })
+
+
+
+
+
+
+
+
+
+
 
 
 
