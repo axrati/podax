@@ -1,6 +1,5 @@
 # Podax
 ### A simple, lightweight app that lets you encrypt/decrypt files or entire directories in complete privacy.
----
 <h2 align="center">~ Encrypt your data with confidence and ease ~</h2>
 <br />
 
