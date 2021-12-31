@@ -1,5 +1,6 @@
 # Podax
 ### A simple, lightweight app that lets you encrypt/decrypt files or entire directories in complete privacy.
+---
 <br />
 <h2 align="center">~ Encrypt your data with confidence and ease ~</h2>
 <br />
@@ -12,7 +13,6 @@ It's highly recommended you use as a long/sophisticated password... Always write
 
 Podax will never save passwords and was built open-source so that you can verify there are no keyloggers or network communications being made. 
 <br />
-
 <br />
 
 # Podax Features
