@@ -151,7 +151,16 @@ function Encrypt() {
         }
          else if (type_input === "dir"){
             // Complex deconstruction of sub_folders and files
-
+            ipcRenderer.send('encrypt:dir', {"file_path":filepath_input, "pass":pass_input} )
+            ipcRenderer.on('encrypt:dir:reply', function(event,reply){
+                if (reply.success){
+                    set_success_text(reply.location)
+                    set_success_stat(true)
+                } else {
+                    set_error_text("Failed encryption - check file encoding")
+                    set_error_stat(true)
+                }
+            })
          }
     }
 

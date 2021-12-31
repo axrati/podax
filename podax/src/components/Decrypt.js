@@ -125,6 +125,9 @@ function Decrypt() {
         }
          else if (type_input === "dir"){
             // Complex deconstruction of sub_folders and files
+            console.log('Folder, not file')
+            set_error_stat(true)
+            set_error_text("Provide link to FILE not FOLDER")
 
          }
     }
