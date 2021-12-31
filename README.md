@@ -28,7 +28,7 @@ Nothing to hide here. Reach out to collaborate or request new capabilities.
 Purely offline application, no inbound/outbound network calls made.
 
 <br />
-<br />
+
 
 
 # Repository Information
