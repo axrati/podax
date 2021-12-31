@@ -8,9 +8,10 @@ Most operating systems/applications that encrypt data store their keys on your c
 <br />
 
 Podax will never save passwords and was built open-source so that you can verify there are no keyloggers or network communications being made. 
-#### ~ Encrypt your data with confidence and ease ~
+### ~ Encrypt your data with confidence and ease ~
 
 <br />
+---
 <br />
 
 # Podax Features
@@ -28,7 +29,7 @@ Nothing to hide here. Reach out to collaborate or request new capabilities.
 Purely offline application, no inbound/outbound network calls made.
 
 <br />
-<br />
+---
 <br />
 
 
