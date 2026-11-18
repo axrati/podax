@@ -1,0 +1,73 @@
+appId: io.podax.desktop
+productName: Podax
+copyright: Copyright © 2021-2026 axrati
+
+directories:
+  output: release
+  buildResources: build-resources
+
+files:
+  - dist/**/*
+  - electron/**/*.cjs
+  - '!electron/**/*.test.cjs'
+  - package.json
+
+extraResources:
+  - from: LICENSE
+    to: LICENSE.podax.txt
+  - from: THIRD_PARTY_NOTICES.txt
+    to: THIRD_PARTY_NOTICES.txt
+
+asar: true
+npmRebuild: false
+compression: normal
+artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+afterPack: scripts/after-pack.cjs
+
+electronFuses:
+  runAsNode: false
+  enableCookieEncryption: true
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  enableEmbeddedAsarIntegrityValidation: true
+  onlyLoadAppFromAsar: true
+  loadBrowserProcessSpecificV8Snapshot: false
+  grantFileProtocolExtraPrivileges: false
+
+mac:
+  category: public.app-category.utilities
+  icon: build-resources/icon.icns
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  darkModeSupport: true
+  target:
+    - dmg
+    - zip
+
+dmg:
+  sign: false
+
+win:
+  icon: build-resources/icon.ico
+  target:
+    - nsis
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  deleteAppDataOnUninstall: false
+  installerIcon: build-resources/icon.ico
+  uninstallerIcon: build-resources/icon.ico
+
+linux:
+  icon: build-resources/icon.png
+  category: Utility
+  executableName: podax
+  syncDesktopName: true
+  synopsis: Offline file and folder encryption
+  description: Encrypt and decrypt files and folders locally without a network connection.
+  maintainer: axrati
+  target:
+    - AppImage
+    - deb
